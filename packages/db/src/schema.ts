@@ -1,3 +1,4 @@
+import { InferInsertModel, InferSelectModel } from 'drizzle-orm'
 import { pgTable, serial, integer, text, boolean, timestamp, primaryKey, unique } from 'drizzle-orm/pg-core'
 
 export const categoryJob = pgTable('category_job', {
@@ -75,3 +76,19 @@ export const company = pgTable(
   },
   (table) => [unique('company_unique').on(table.name)]
 )
+
+export type CategoryJob = InferSelectModel<typeof categoryJob>
+export type TypeSalary = InferSelectModel<typeof typeSalary>
+export type TypeJob = InferSelectModel<typeof typeJob>
+export type Experience = InferSelectModel<typeof experience>
+export type Vacancy = InferSelectModel<typeof vacancy>
+export type ExperienceVacancy = InferSelectModel<typeof experience_vacancy>
+export type Company = InferSelectModel<typeof company>
+
+export type CategoryJobInsert = InferInsertModel<typeof categoryJob>
+export type TypeSalaryInsert = InferInsertModel<typeof typeSalary>
+export type TypeJobInsert = InferInsertModel<typeof typeJob>
+export type ExperienceInsert = InferInsertModel<typeof experience>
+export type VacancyInsert = InferInsertModel<typeof vacancy>
+export type ExperienceVacancyInsert = InferInsertModel<typeof experience_vacancy>
+export type CompanyInsert = InferInsertModel<typeof company>

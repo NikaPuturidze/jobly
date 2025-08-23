@@ -1,0 +1,1 @@
+ALTER TABLE "experience" RENAME COLUMN "experience_Id" TO "experience_id";

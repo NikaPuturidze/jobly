@@ -1,0 +1,2 @@
+ALTER TABLE "vacancy" DROP CONSTRAINT "vacancy_title_company_id_city_country_category_id_job_type_id_unique";--> statement-breakpoint
+ALTER TABLE "vacancy" ADD CONSTRAINT "vacancy_unique" UNIQUE("title","company_id","city","country","category_id","job_type_id");

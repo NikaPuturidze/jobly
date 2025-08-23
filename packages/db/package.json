@@ -1,0 +1,11 @@
+{
+  "name": "@jobly/db",
+  "author": "Nika Puturidze",
+  "packageManager": "pnpm@10.13.1",
+  "private": true,
+  "scripts": {
+    "g": "drizzle-kit generate --config ./src/config/drizzle.config.ts",
+    "m": "drizzle-kit migrate --config ./src/config/drizzle.config.ts",
+    "p": "drizzle-kit pull --config ./src/config/drizzle.config.ts"
+  }
+}

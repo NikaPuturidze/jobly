@@ -1,0 +1,10 @@
+{
+  "name": "@jobly/queue",
+  "author": "Nika Puturidze",
+  "packageManager": "pnpm@10.13.1",
+  "private": true,
+  "dependencies": {
+    "bullmq": "^5.58.0",
+    "ioredis": "^5.7.0"
+  }
+}

@@ -1,0 +1,1 @@
+ALTER TABLE "company" ALTER COLUMN "has_logo" SET NOT NULL;

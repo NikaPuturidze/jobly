@@ -1,0 +1,1 @@
+ALTER TABLE "vacancy" DROP CONSTRAINT "vacancy_unique";

@@ -1,0 +1,1 @@
+ALTER TABLE "categories_job" RENAME TO "category_job";

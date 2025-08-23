@@ -1,0 +1,1 @@
+ALTER TABLE "vacancy" ALTER COLUMN "job_type_id" DROP NOT NULL;

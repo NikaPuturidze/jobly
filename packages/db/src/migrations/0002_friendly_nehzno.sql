@@ -1,0 +1,1 @@
+ALTER TABLE "type_salary" ALTER COLUMN "fixed" SET NOT NULL;

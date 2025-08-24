@@ -1,0 +1,1 @@
+ALTER TABLE "vacancy" ADD CONSTRAINT "vacancy_salary_period_id_period_salary_type_id_fk" FOREIGN KEY ("salary_period_id") REFERENCES "public"."period_salary"("type_id") ON DELETE no action ON UPDATE no action;

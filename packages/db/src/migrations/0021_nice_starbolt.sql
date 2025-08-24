@@ -1,0 +1,1 @@
+ALTER TABLE "vacancy" RENAME COLUMN "salary_period" TO "salary_period_id";

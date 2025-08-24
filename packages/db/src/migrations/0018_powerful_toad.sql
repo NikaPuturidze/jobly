@@ -1,0 +1,1 @@
+ALTER TABLE "vacancy" ADD CONSTRAINT "vacancy_category_id_unique" UNIQUE("category_id");

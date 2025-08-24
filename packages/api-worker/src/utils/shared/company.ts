@@ -3,7 +3,7 @@ import { company } from '@jobly/db/src/schema'
 import { eq } from 'drizzle-orm'
 
 export async function getOrCreateCompany(data: {
-  name: string
+  name: string | null
   description?: string | null
   hasLogo: boolean
   logo: string | null
@@ -24,6 +24,7 @@ export async function getOrCreateCompany(data: {
     .returning({ id: company.id })
 
   if (inserted) return inserted.id
+  if (!data.name) return null
 
   const [existing] = await db.select({ id: company.id }).from(company).where(eq(company.name, data.name))
 

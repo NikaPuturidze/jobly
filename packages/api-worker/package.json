@@ -5,11 +5,12 @@
   "private": true,
   "scripts": {
     "flush-redis": "redis-cli FLUSHALL",
-    "worker:clean-start": "pnpm run flush-redis && ts-node src/index.ts",
-    "worker:start": "pnpm run ts-node src/index.ts"
+    "worker:clean-start": "pnpm run flush-redis && ts-node ./index.ts",
+    "worker:start": "pnpm ts-node ./index.ts"
   },
   "dependencies": {
     "@jobly/db": "workspace:*",
-    "@jobly/queue": "workspace:*"
+    "@jobly/queue": "workspace:*",
+    "pg": "^8.16.3"
   }
 }

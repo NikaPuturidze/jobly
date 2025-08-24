@@ -1,0 +1,1 @@
+ALTER TABLE "vacancy" ADD CONSTRAINT "vacancy_source_url_unique" UNIQUE("source_url");

@@ -19,11 +19,7 @@ export default function createVacancyWorker<T>(
 
   worker.on('completed', (job) => {
     const elapsed = Date.now() - startTime
-    console.log(
-      `Job ${job.id} (page ${job.data.page}) finished! Time elapsed since start: ${(elapsed / 1000).toFixed(
-        2
-      )}s`
-    )
+    console.log(`Job ${job.id} finished! Time elapsed since start: ${(elapsed / 1000).toFixed(2)}s`)
   })
 
   worker.on('failed', (job, err) => console.error(`Job ${job?.id} failed:`, err))

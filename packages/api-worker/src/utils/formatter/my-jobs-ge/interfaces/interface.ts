@@ -41,7 +41,7 @@ export interface IMyJobsGeData {
   languages: Language[]
   priority_level: number
   salary_from: null
-  salary_period: null | string
+  salary_period: SalaryPeriodType | null
   salary_to: null
   salary_type: SalaryType
   seo_keywords: SEOKeywords
@@ -109,6 +109,11 @@ export enum JobType {
   OnSite = 'on_site',
   Remote = 'remote',
   Freelance = 'freelance',
+}
+
+export enum SalaryPeriodType {
+  Monthly = 'monthly',
+  Daily = 'daily',
 }
 
 export enum SalaryType {

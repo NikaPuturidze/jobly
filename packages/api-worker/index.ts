@@ -1,10 +1,15 @@
 import axios from 'axios'
-import { IMyJobsGe, IMyJobsGeData } from './src/interfaces'
-import format from './src/utils/formatter/my-jobs-ge/formatter'
-import { insertVacancy } from './src/utils/formatter/my-jobs-ge'
 import createVacancyWorker from './src'
+import insert_my_jobs_ge from './src/utils/formatter/my-jobs-ge/'
+import format_my_jobs_ge from './src/utils/formatter/my-jobs-ge/format'
+import insert_jobs_ss_ge from './src/utils/formatter/jobs-ss-ge'
+import format_jobs_ss_ge from './src/utils/formatter/jobs-ss-ge/format'
+import { IMyJobsGe, IMyJobsGeData } from './src/utils/formatter/my-jobs-ge/interfaces/interface'
+import { getAccessToken } from './src/utils/formatter/jobs-ss-ge'
+import { CategoryId, IJobsSsGe, IJobsSsGeItem } from './src/utils/formatter/jobs-ss-ge/interfaces/interface'
+import { ICompanies } from './src/utils/formatter/jobs-ss-ge/interfaces/companies.interface'
 
-async function initVacancyWorker() {
+export async function my_jobs_ge_worker() {
   const firstCall = await axios.get<IMyJobsGe>(`https://api.myjobs.ge/api/ka/public/vacancies/v2?page=1`)
 
   const firstPageData = firstCall.data.data
@@ -17,14 +22,75 @@ async function initVacancyWorker() {
     )
     return data.data
   }
+
   createVacancyWorker<IMyJobsGeData>(
-    'vacancy-queue',
+    'my-jobs-ge-worker',
     fetchVacanciesPage,
     async (item) => {
-      await insertVacancy(format(item))
+      await insert_my_jobs_ge(format_my_jobs_ge(item))
     },
     totalPages
   )
 }
 
-initVacancyWorker()
+export async function jobs_ss_ge_worker() {
+  const token = await getAccessToken()
+
+  const [firstVacancy, firstCompany] = await Promise.all([
+    axios.post<IJobsSsGe>(
+      'https://jobs-gateway.ss.ge/Jobs/search',
+      {
+        paging: { limit: 1, offset: 1 },
+        jobsDealType: 1,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    ),
+    axios.post<ICompanies>(
+      'https://jobs-gateway.ss.ge/Company/companies-list',
+      {
+        paging: { limit: 1, offset: 1 },
+        sorting: { sortBy: 'CountOfApplications', sortDir: 'desc' },
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    ),
+  ])
+
+  const totalVacancies = firstVacancy.data.result.totalCount
+  const totalCompanies = firstCompany.data.result.totalCount
+
+  const { data: companies } = await axios.post<ICompanies>(
+    'https://jobs-gateway.ss.ge/Company/companies-list',
+    {
+      paging: { limit: totalCompanies, offset: 1 },
+      sorting: { sortBy: 'CountOfApplications', sortDir: 'desc' },
+    },
+    { headers: { Authorization: `Bearer ${token}` } }
+  )
+
+  const fetchVacancies = async (): Promise<IJobsSsGeItem[]> => {
+    const { data } = await axios.post<IJobsSsGe>(
+      'https://jobs-gateway.ss.ge/Jobs/search',
+      {
+        paging: { limit: totalVacancies, offset: 1 },
+        jobsDealType: 1,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+
+    console.log(data.result.items.length)
+    return data.result.items
+  }
+
+  createVacancyWorker<IJobsSsGeItem>(
+    'jobs-ss-ge-worker',
+    fetchVacancies,
+    async (item) => {
+      if (item.sphereId === (396 as CategoryId)) return
+      if (item.sphereId === (394 as CategoryId)) return
+      await insert_jobs_ss_ge(format_jobs_ss_ge({ data: item, companies: companies.result.items }))
+    },
+    1
+  )
+}
+
+jobs_ss_ge_worker()

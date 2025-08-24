@@ -113,6 +113,97 @@
       "when": 1755975503186,
       "tag": "0015_talented_speed",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1756043744886,
+      "tag": "0016_classy_kate_bishop",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1756044345901,
+      "tag": "0017_sticky_black_tom",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1756044414563,
+      "tag": "0018_powerful_toad",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1756044450228,
+      "tag": "0019_absent_boomerang",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1756053594112,
+      "tag": "0020_pretty_miss_america",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1756053655477,
+      "tag": "0021_nice_starbolt",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1756053684729,
+      "tag": "0022_cool_amazoness",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1756053771368,
+      "tag": "0023_curious_romulus",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1756057535486,
+      "tag": "0024_aberrant_morph",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1756059699488,
+      "tag": "0025_eminent_expediter",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1756059996744,
+      "tag": "0026_rapid_landau",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1756061251895,
+      "tag": "0027_early_roxanne_simpson",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1756062021227,
+      "tag": "0028_shocking_jubilee",
+      "breakpoints": true
     }
   ]
 }

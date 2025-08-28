@@ -4,7 +4,7 @@
   "packageManager": "pnpm@10.13.1",
   "private": true,
   "scripts": {
-    "flush-redis": "redis-cli FLUSHALL",
+    "worker:flush": "redis-cli FLUSHALL",
     "worker:clean-start": "pnpm run flush-redis && ts-node ./index.ts",
     "worker:start": "pnpm ts-node ./index.ts"
   },

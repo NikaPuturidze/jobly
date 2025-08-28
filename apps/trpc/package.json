@@ -4,7 +4,7 @@
   "packageManager": "pnpm@10.13.1",
   "private": true,
   "scripts": {
-    "server": "pnpm ts-node ./src/server/index.ts"
+    "dev": "pnpm ts-node ./src/server/index.ts"
   },
   "dependencies": {
     "@jobly/db": "workspace:*",

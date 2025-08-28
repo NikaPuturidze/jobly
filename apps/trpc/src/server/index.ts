@@ -7,7 +7,7 @@ import path from 'path'
 config({ path: path.resolve(__dirname, '../../../../.env') })
 
 if (!process.env['PORT_TRPC']) {
-  throw new Error('PORT_TRPC is not defined in the environment variables.')
+  throw new Error('PORT_TRPC is not defined in the environment variables.1')
 }
 
 const app = express()

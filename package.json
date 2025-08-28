@@ -8,6 +8,7 @@
     "worker:flush": "pnpm --filter @jobly/api-worker run worker:flush",
     "worker:clean-start": "pnpm --filter @jobly/api-worker run worker:clean-start",
     "worker:start": "pnpm --filter @jobly/api-worker run worker:start",
+    "dev": "turbo dev",
     "prepare": "husky"
   },
   "dependencies": {
@@ -15,6 +16,7 @@
     "dotenv": "^17.2.1",
     "drizzle-orm": "^0.44.4",
     "postgres": "^3.4.7",
+    "turbo": "^2.5.6",
     "zod": "^4.1.3"
   },
   "devDependencies": {

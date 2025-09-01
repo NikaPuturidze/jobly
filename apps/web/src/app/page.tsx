@@ -1,8 +1,17 @@
 'use server'
-
-import { trpc } from '@jobly/trpc'
+import React from 'react'
+import { Button } from '@heroui/react'
+import { trpcClient } from '../lib/trpc'
 
 export default async function Home() {
-  const [response] = await trpc.vacancy.title.query()
-  return <div>Found {response?.count} vacanies in db</div>
+  const response = await trpcClient.hello.query()
+  const data = response.item
+
+  return (
+    <>
+      <Button color="primary">Fetch Data</Button>
+
+      <div>{data && `Total rows in vacancy table: ${data}`}</div>
+    </>
+  )
 }

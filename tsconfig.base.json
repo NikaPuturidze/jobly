@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "nodenext",
     "lib": ["ES2022", "DOM"],
     "types": ["node"],
     "rootDir": ".",
@@ -25,7 +24,8 @@
     "skipLibCheck": true,
     "verbatimModuleSyntax": false,
     "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force"
+    "moduleDetection": "force",
+    "moduleResolution": "node"
   },
   "include": ["packages/**/*", "apps/**/*", "workers/**/*"],
   "exclude": ["node_modules", "dist"]

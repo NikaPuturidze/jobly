@@ -1,1 +1,2 @@
-export { default as trpc } from './src/client'
+export * from './src/index'
+export * from './src/trpc'

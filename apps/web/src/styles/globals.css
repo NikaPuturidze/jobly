@@ -1,2 +1,76 @@
 @import 'tailwindcss';
 @config "../../tailwind.config.js";
+
+body {
+  font-family: 'FiraGO', sans-serif;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  header {
+    max-width: 1280px;
+
+    @media (width <= 48rem) {
+      padding-inline: 1.25rem !important;
+    }
+  }
+}
+
+a {
+  cursor: pointer;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #bbbbbb transparent;
+}
+
+* {
+  .swiper-button-next,
+  .swiper-button-prev {
+    background-color: var(--swiper-navigation-color) !important;
+    margin-top: calc(0px - (var(--swiper-navigation-size) / 2)) !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    box-shadow: 0 1.8px 9px 0 #00000033 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: absolute !important;
+    z-index: 10 !important;
+    cursor: pointer !important;
+    top: var(--swiper-navigation-top-offset) !important;
+    right: var(--swiper-navigation-side-offset) !important;
+
+    &::after {
+      all: unset !important;
+      content: '' !important;
+      display: block !important;
+      position: absolute !important;
+      left: calc(70%) !important;
+      transform: translateX(-70%) !important;
+      width: 40% !important;
+      height: 40% !important;
+      background-image: url('/arrow-right.svg') !important;
+      background-size: contain !important;
+      background-repeat: no-repeat !important;
+    }
+
+    @media (max-width: 1024px) {
+      display: none;
+    }
+  }
+
+  .swiper-button-prev {
+    left: var(--swiper-navigation-side-offset);
+
+    &::after {
+      background-image: url('/arrow-left.svg') !important;
+    }
+  }
+
+  .swiper-button-disabled {
+    display: none !important;
+    pointer-events: none !important;
+  }
+}

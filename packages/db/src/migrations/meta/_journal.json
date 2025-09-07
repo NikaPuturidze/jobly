@@ -204,6 +204,27 @@
       "when": 1756062021227,
       "tag": "0028_shocking_jubilee",
       "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1757170861606,
+      "tag": "0029_rare_maginty",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1757170956217,
+      "tag": "0030_faulty_silver_fox",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1757171597398,
+      "tag": "0031_pretty_albert_cleary",
+      "breakpoints": true
     }
   ]
 }

@@ -5,6 +5,8 @@ export const categoryJob = pgTable('category_job', {
   id: serial('id').primaryKey(),
   categoryId: integer('category_id').unique().notNull(),
   name: text('name').notNull(),
+  icon: text('icon'),
+  color: text('color').notNull().default('#0a66c2'),
 })
 
 export const typeSalary = pgTable('type_salary', {
@@ -77,6 +79,13 @@ export const company = pgTable(
   (table) => [unique('company_unique').on(table.name)]
 )
 
+export const navigation = pgTable('navigation', {
+  id: serial().primaryKey().notNull(),
+  label: text().notNull(),
+  path: text().notNull(),
+  order: integer().default(0).notNull(),
+})
+
 export type CategoryJob = InferSelectModel<typeof categoryJob>
 export type TypeSalary = InferSelectModel<typeof typeSalary>
 export type TypeJob = InferSelectModel<typeof typeJob>
@@ -85,6 +94,7 @@ export type Vacancy = InferSelectModel<typeof vacancy>
 export type ExperienceVacancy = InferSelectModel<typeof experience_vacancy>
 export type Company = InferSelectModel<typeof company>
 export type PeriodSalary = InferSelectModel<typeof periodSalary>
+export type Navigation = InferSelectModel<typeof navigation>
 
 export type CategoryJobInsert = InferInsertModel<typeof categoryJob>
 export type TypeSalaryInsert = InferInsertModel<typeof typeSalary>
@@ -94,3 +104,4 @@ export type VacancyInsert = InferInsertModel<typeof vacancy>
 export type ExperienceVacancyInsert = InferInsertModel<typeof experience_vacancy>
 export type CompanyInsert = InferInsertModel<typeof company>
 export type PeriodSalaryInsert = InferInsertModel<typeof periodSalary>
+export type NavigationInsert = InferInsertModel<typeof navigation>

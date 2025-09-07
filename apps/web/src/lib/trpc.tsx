@@ -1,4 +1,4 @@
-import { createTRPCReact, httpBatchLink } from '@trpc/react-query'
+import { createTRPCReact, httpBatchStreamLink } from '@trpc/react-query'
 import { TrpcRouter } from '@jobly/trpc'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
@@ -15,7 +15,7 @@ const queryClient = new QueryClient({
 
 export const trpcServer = trpcClient.createClient({
   links: [
-    httpBatchLink({
+    httpBatchStreamLink({
       url: 'http://localhost:3000/trpc',
     }),
   ],

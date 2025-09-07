@@ -1,7 +1,5 @@
 'use client'
 
-import type { ThemeProviderProps } from 'next-themes'
-
 import * as React from 'react'
 import { HeroUIProvider } from '@heroui/system'
 import { useRouter } from 'next/navigation'
@@ -10,7 +8,6 @@ import { TrpcProvider } from '../lib/trpc'
 
 export interface ProvidersProps {
   children: React.ReactNode
-  themeProps?: ThemeProviderProps
 }
 
 declare module '@react-types/shared' {
@@ -24,11 +21,13 @@ function HeroProvider({ children }: ProvidersProps) {
   return <HeroUIProvider navigate={router.push}>{children}</HeroUIProvider>
 }
 
-export function Providers({ children, themeProps }: ProvidersProps) {
+export function Providers({ children }: ProvidersProps) {
   return (
     <TrpcProvider>
       <HeroProvider>
-        <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+        <NextThemesProvider attribute="class" defaultTheme="dark">
+          <div className="min-h-screen font-sans antialiased">{children}</div>
+        </NextThemesProvider>
       </HeroProvider>
     </TrpcProvider>
   )

@@ -1,0 +1,8 @@
+:root {
+  --items-per-view-slide: 3;
+  --swiper-theme-color: #ffffff;
+  --swiper-navigation-top-offset: 35%;
+  --swiper-navigation-side-offset: 8px;
+  --swiper-navigation-color: var(--color-white);
+  --swiper-navigation-size: 12px;
+}

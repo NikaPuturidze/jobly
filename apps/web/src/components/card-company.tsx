@@ -7,7 +7,7 @@ export default function CompanyCard({ data }: { data: TopCompany }) {
   return (
     <Card
       shadow="none"
-      className="hover:shadow-card-hover transition-all duration-200 group border-1 border-[#eeeeee]"
+      className="hover:shadow-card-hover transition-all duration-200 group border-1 border-content5"
     >
       <CardBody className="p-6">
         <Link href={`/companies/${data.companyId}`} className="block">
@@ -29,8 +29,7 @@ export default function CompanyCard({ data }: { data: TopCompany }) {
             </div>
           </div>
 
-          {/* Description */}
-          {/* <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{}</p> */}
+          <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{data.description}</p>
 
           <div className="grid grid-cols-2 gap-3 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">

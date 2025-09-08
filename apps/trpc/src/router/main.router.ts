@@ -84,21 +84,20 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
               companyId: company.id,
               name: company.name,
               logo: company.logo,
+              description: company.description,
               totalVacancies: count(vacancy.id),
             })
             .from(company)
             .where(
               inArray(company.name, [
-                'ლიბერთი ბანკი',
+                'ლიბერთ ბანკი',
                 'თიბისი',
                 'კრედო ბანკი',
                 'ნიკორა ტრეიდი',
                 'ნიკორა',
                 'TNET',
                 'სილქნეტი',
-                'საბვეი',
-                'დანკინ',
-                'თეგეტა მოტორსი',
+                'ზუმერი · Zoommer',
               ])
             )
             .leftJoin(vacancy, eq(company.id, vacancy.companyId))

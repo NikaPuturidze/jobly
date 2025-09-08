@@ -118,6 +118,10 @@ const config = {
               DEFAULT: '#d4d4d8',
               foreground: '#000',
             },
+            content5: {
+              DEFAULT: '#eeeeee',
+              foreground: '#eeeeee',
+            },
             focus: '#006FEE',
             overlay: '#000000',
           },
@@ -225,6 +229,10 @@ const config = {
             content4: {
               DEFAULT: '#52525b',
               foreground: '#fff',
+            },
+            content5: {
+              DEFAULT: '#454545',
+              foreground: '#454545',
             },
             focus: '#006FEE',
             overlay: '#ffffff',

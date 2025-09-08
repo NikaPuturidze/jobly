@@ -6,24 +6,21 @@ import { PopularVacancy } from '@jobly/trpc/src/router/main.router'
 
 export default function VacancyCard({ data }: { data: PopularVacancy }) {
   return (
-    <Card shadow="none" className="border-1 border-[#eeeeee]">
+    <Card shadow="none" className="border-1 border-content5">
       <CardBody className="p-5">
         <div className="flex flex-col gap-4">
           <div className="flex items-start justify-between">
             <div className="flex gap-3">
               <div className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0 bg-default-100 flex items-center justify-center">
                 {data.companyHasLogo && data.companyLogo ? (
-                  <img
-                    src={data.companyLogo}
-                    alt={`${data.companyName} logo`}
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={data.companyLogo} alt=" " className="w-full h-full object-cover" />
                 ) : (
                   <Building className="text-2xl text-default-400" />
                 )}
               </div>
               <div>
                 <h3 className="font-semibold text-medium line-clamp-1">{data.title}</h3>
+                <h3 className="text-small line-clamp-1 text-default-700">{data.companyName}</h3>
               </div>
             </div>
           </div>

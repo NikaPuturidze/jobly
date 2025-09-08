@@ -29,16 +29,27 @@ export default function HomeView({ data }: { data: MainGet }) {
         </div>
       </section>
       <section aria-label="top-companies" className="pb-10">
-        <SectionTitle title="ტოპ კომპანიები" showAllText="ყველა კომპანია" route="/companies" />
+        <SectionTitle
+          title="ტოპ კომპანიები"
+          showAllText="ყველა კომპანია"
+          route="/companies"
+          className={{
+            left: 'company-prev',
+            right: 'company-next',
+          }}
+        />
         <Swiper
-          spaceBetween={16}
-          slidesPerView={3}
-          slidesPerGroup={3}
+          slidesPerView={'auto'}
           modules={[Navigation]}
-          navigation={true}
+          navigation={{
+            prevEl: '.company-prev',
+            nextEl: '.company-next',
+          }}
+          loop={true}
+          onSwiper={(swiper) => swiper.navigation.init()}
         >
           {data.popularCompanies.map((company) => (
-            <SwiperSlide key={company.companyId}>
+            <SwiperSlide className="max-w-100 mr-4" key={company.companyId}>
               <CompanyCard data={company} />
             </SwiperSlide>
           ))}

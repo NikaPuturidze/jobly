@@ -11,7 +11,7 @@ export default function CategoryCard({ data }: { data: MainCategories[number] })
       as={Link}
       shadow="none"
       href={`/vacancies?categoryId=${data}`}
-      className="w-full hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border-1 border-[#eeeeee]"
+      className="w-full hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border-1 border-content5"
     >
       <CardBody className="p-5">
         <div className="flex flex-col items-center text-center gap-3">

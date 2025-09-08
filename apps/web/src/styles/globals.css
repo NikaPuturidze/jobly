@@ -9,7 +9,7 @@ body {
   header {
     max-width: 1280px;
 
-    @media (width <= 48rem) {
+    @media (width <=48rem) {
       padding-inline: 1.25rem !important;
     }
   }
@@ -25,14 +25,20 @@ a {
 }
 
 * {
+  .swiper-slide:last-child {
+    margin-right: 0;
+  }
+
   .swiper-button-next,
   .swiper-button-prev {
-    background-color: var(--swiper-navigation-color) !important;
+    background-color: #fafafa !important;
+    border-width: 1px;
+    border-color: #eeeeee !important;
     margin-top: calc(0px - (var(--swiper-navigation-size) / 2)) !important;
     border-radius: 50% !important;
     width: 40px !important;
     height: 40px !important;
-    box-shadow: 0 1.8px 9px 0 #00000033 !important;
+    height: 40px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;

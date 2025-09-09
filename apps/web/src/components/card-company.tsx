@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Badge, Card, CardBody } from '@heroui/react'
+import { Card, CardBody } from '@heroui/react'
 import { Briefcase, Building } from 'lucide-react'
 import { TopCompany } from '@jobly/trpc/src/router/main.router'
 
@@ -11,7 +11,7 @@ export default function CompanyCard({ data }: { data: TopCompany }) {
     >
       <CardBody className="p-6">
         <Link href={`/companies/${data.companyId}`} className="block">
-          <div className="flex items-start gap-4 mb-4">
+          <div className="flex items-start gap-2 mb-4">
             <div className="w-16 h-16 bg-gradient-card rounded-lg flex items-center justify-center flex-shrink-0">
               {data.logo && data.name ? (
                 <img src={data.logo} alt={data.name} className="w-12 h-12 rounded object-cover" />
@@ -19,17 +19,14 @@ export default function CompanyCard({ data }: { data: TopCompany }) {
                 <Building className="w-8 h-8 text-muted-foreground" />
               )}
             </div>
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 flex self-center">
               <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors mb-1">
                 {data.name}
               </h3>
-              <Badge variant="solid" className="text-xs mb-2">
-                {data.name}
-              </Badge>
             </div>
           </div>
 
-          <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{data.description}</p>
+          <p className="text-sm text-muted-foreground mb-4 line-clamp-4">{data.description}</p>
 
           <div className="grid grid-cols-2 gap-3 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">

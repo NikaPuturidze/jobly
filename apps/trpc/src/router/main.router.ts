@@ -3,7 +3,6 @@ import { categoryJob, company, typeJob, vacancy } from '@jobly/db/src/schema'
 import { inferProcedureOutput, TRPCRootObject } from '@trpc/server'
 import { RuntimeConfigOptions } from '@trpc/server/unstable-core-do-not-import'
 import { eq, count, inArray, desc, and, isNull, not, sql, gt } from 'drizzle-orm'
-import { Cat } from '../../../../packages/api-worker/src/utils/shared/categories'
 
 export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOptions<object, object>>) =>
   trpc.router({
@@ -64,18 +63,6 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
               totalVacancies: count(vacancy.id),
             })
             .from(categoryJob)
-            .where(
-              inArray(categoryJob.categoryId, [
-                Cat.IT,
-                Cat.Cleaning,
-                Cat.Banking,
-                Cat.AutoService,
-                Cat.Horeca,
-                Cat.Finance,
-                Cat.Cashier,
-                Cat.Security,
-              ])
-            )
             .leftJoin(vacancy, eq(categoryJob.categoryId, vacancy.categoryId))
             .groupBy(categoryJob.categoryId, categoryJob.name, categoryJob.icon, categoryJob.color)
             .orderBy(desc(count(vacancy.id))),

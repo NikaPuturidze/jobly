@@ -5,33 +5,33 @@ import Empty from '@/src/components/empty'
 import { Input } from '@heroui/react'
 import { MainCategories } from '@jobly/trpc/src/router/main.router'
 import { Search } from 'lucide-react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDebounceCallback } from 'usehooks-ts'
 
 export default function CategoriesView({ data }: { data: MainCategories }) {
-  const [search, setSearch] = React.useState<string | null>(null)
-  const [categories, setCategories] = React.useState<typeof data | null>()
+  const [query, setQuery] = useState<string | null>(null)
+  const [categories, setCategories] = useState<typeof data | null>()
 
   useEffect(() => {
-    if (!search) setCategories(data)
+    if (!query) setCategories(data)
     else {
-      const filteredCategories = data.filter((v) => v.name?.includes(search))
+      const filteredCategories = data.filter((v) => v.name?.includes(query))
       setCategories(filteredCategories)
     }
-  }, [search])
+  }, [query])
 
-  const handleSearch = (value: React.ChangeEvent<HTMLInputElement>) => debouncedSetSearch(value.target.value)
+  const handleSetQuery = (el: React.ChangeEvent<HTMLInputElement>) => debouncedSetSearch(el.target.value)
 
-  const debouncedSetSearch = useDebounceCallback((value: string) => setSearch(value), 250)
+  const debouncedSetSearch = useDebounceCallback((value: string) => setQuery(value), 250)
 
   return (
     <section aria-label="categories" className="flex flex-col gap-6">
       <Input
         labelPlacement="outside"
         placeholder="ძიება"
-        startContent={<Search size={18} strokeWidth={2} />}
+        startContent={<Search size={18} strokeWidth={2} opacity={0.5} />}
         className="max-w-120"
-        onChange={handleSearch}
+        onChange={handleSetQuery}
       />
       {categories && categories.length ? (
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

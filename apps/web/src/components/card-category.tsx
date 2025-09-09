@@ -16,7 +16,7 @@ export default function CategoryCard({ data }: { data: MainCategories[number] })
       <CardBody className="p-5">
         <div className="flex flex-col items-center text-center gap-3">
           <div
-            className={`w-16 h-16 rounded-full flex items-center justify-center`}
+            className={`w-16 h-16 rounded-md flex items-center justify-center`}
             style={{
               backgroundColor: hexToRGB(data.color, 0.1),
               color: data.color,

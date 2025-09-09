@@ -18,7 +18,7 @@ export const ThemeSwitcher = () => {
   return (
     <div
       onClick={handleSwitch}
-      className="border-1 border-default-300 rounded-2xl p-1.5 cursor-pointer text-center"
+      className="border-1 border-default-300 rounded-xl p-1.5 cursor-pointer text-center"
     >
       {!isDark ? <Sun color="#0f0f0f" strokeWidth={1} /> : <Moon color="#ffffff" strokeWidth={1} />}
     </div>

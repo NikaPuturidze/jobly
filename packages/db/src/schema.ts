@@ -25,7 +25,7 @@ export const typeJob = pgTable('type_job', {
 export const experience = pgTable('experience', {
   id: serial('id').primaryKey(),
   experienceId: integer('experience_id').unique().notNull(),
-  level: text('level'),
+  level: text('level').notNull(),
 })
 
 export const periodSalary = pgTable('period_salary', {

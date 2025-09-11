@@ -68,7 +68,7 @@ export default function HomeView({ data }: { data: MainGet }) {
                   ))}
               </Select>
               <Button
-                onClick={() => handleSearch(query, selectedKeys)}
+                onPress={() => handleSearch(query, selectedKeys)}
                 aria-label="Search Button"
                 radius="sm"
                 color="primary"

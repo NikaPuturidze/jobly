@@ -6,7 +6,7 @@ import { PopularVacancy } from '@jobly/trpc/src/router/main.router'
 
 export default function VacancyCard({ data }: { data: PopularVacancy }) {
   return (
-    <Card shadow="none" className="border-1 border-content5">
+    <Card shadow="none" className="border-1 border-content5 h-fit">
       <CardBody className="p-5">
         <div className="flex flex-col gap-4">
           <div className="flex items-start justify-between">

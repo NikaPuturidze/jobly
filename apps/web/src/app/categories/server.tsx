@@ -1,3 +1,5 @@
+'use server'
+
 import { trpcServer } from '@/src/lib/trpc'
 import CategoriesView from './view'
 

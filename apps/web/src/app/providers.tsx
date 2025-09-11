@@ -16,12 +16,12 @@ declare module '@react-types/shared' {
   }
 }
 
-function HeroProvider({ children }: ProvidersProps) {
+function HeroProvider({ children }: Readonly<ProvidersProps>) {
   const router = useRouter()
   return <HeroUIProvider navigate={router.push}>{children}</HeroUIProvider>
 }
 
-export function Providers({ children }: ProvidersProps) {
+export function Providers({ children }: Readonly<ProvidersProps>) {
   return (
     <TrpcProvider>
       <HeroProvider>

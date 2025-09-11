@@ -3,7 +3,7 @@ import { Card, CardBody } from '@heroui/react'
 import { Briefcase, Building } from 'lucide-react'
 import { TopCompany } from '@jobly/trpc/src/router/main.router'
 
-export default function CompanyCard({ data }: { data: TopCompany }) {
+export default function CompanyCard({ data }: Readonly<{ data: TopCompany }>) {
   return (
     <Card
       shadow="none"

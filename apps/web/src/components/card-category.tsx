@@ -4,13 +4,13 @@ import Link from 'next/link'
 import hexToRGB from '../utils/hexToRGB'
 import { MainCategories } from '@jobly/trpc/src/router/main.router'
 
-export default function CategoryCard({ data }: { data: MainCategories[number] }) {
+export default function CategoryCard({ data }: Readonly<{ data: MainCategories[number] }>) {
   return (
     <Card
       isPressable
       as={Link}
       shadow="none"
-      href={`/vacancies?categoryId=${data}`}
+      href={`/vacancies?categoryId=${data.id}`}
       className="w-full hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border-1 border-content5"
     >
       <CardBody className="p-5">

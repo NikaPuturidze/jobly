@@ -8,7 +8,7 @@ import { Search } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { useDebounceCallback } from 'usehooks-ts'
 
-export default function CategoriesView({ data }: { data: MainCategories }) {
+export default function CategoriesView({ data }: Readonly<{ data: MainCategories }>) {
   const [query, setQuery] = useState<string | null>(null)
   const [categories, setCategories] = useState<typeof data | null>()
 
@@ -33,7 +33,7 @@ export default function CategoriesView({ data }: { data: MainCategories }) {
         className="max-w-120"
         onChange={handleSetQuery}
       />
-      {categories && categories.length ? (
+      {categories?.length ? (
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {categories.map((card) => (
             <CategoryCard key={card.id} data={card} />

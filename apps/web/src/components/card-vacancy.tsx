@@ -4,7 +4,7 @@ import { Button, Card, CardBody } from '@heroui/react'
 import { Briefcase, Building, Calendar, GeorgianLari, MapPin } from 'lucide-react'
 import { PopularVacancy } from '@jobly/trpc/src/router/main.router'
 
-export default function VacancyCard({ data }: { data: PopularVacancy }) {
+export default function VacancyCard({ data }: Readonly<{ data: PopularVacancy }>) {
   return (
     <Card shadow="none" className="border-1 border-content5 h-fit">
       <CardBody className="p-5">

@@ -5,7 +5,7 @@ type ButtonProps = {
   className: string
 }
 
-export default function SwiperButton({ side, className }: ButtonProps) {
+export default function SwiperButton({ side, className }: Readonly<ButtonProps>) {
   return (
     <button
       className={`flex size-8 items-center justify-center cursor-pointer rounded-full bg-background text-foreground border-1 border-content5 hover:bg-foreground/5 transition:colors duration-300 ${className}`}

@@ -7,8 +7,8 @@ export interface JobHandler<T> {
 
 export class BaseWorker<T> {
   constructor(
-    private queueName: string,
-    private handler: JobHandler<T>
+    private readonly queueName: string,
+    private readonly handler: JobHandler<T>
   ) {}
 
   start() {

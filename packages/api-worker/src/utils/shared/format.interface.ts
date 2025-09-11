@@ -14,7 +14,7 @@ export interface IFormat {
   companyHasLogo: boolean
   companyLogo: string | null
   companyCountry: string | null
-  companyCity: string | null | null
+  companyCity: string | null
   companyDescription: string | null
   experienceIds: number[]
 }

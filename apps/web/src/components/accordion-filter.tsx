@@ -1,5 +1,6 @@
 import { Checkbox } from '@heroui/react'
 import { Dispatch, SetStateAction, useMemo } from 'react'
+import Empty from './empty'
 
 type DataItem = {
   id: number
@@ -24,7 +25,7 @@ export default function FilterAccordion<DataType extends DataItem, StateType>({
   scrollable = true,
   selected,
   setSelected,
-}: FilterAccordionProps<DataType, StateType>) {
+}: Readonly<FilterAccordionProps<DataType, StateType>>) {
   const sortedData = useMemo(() => {
     return sortBy ? [...data].sort((a, b) => String(a[sortBy]).localeCompare(String(b[sortBy]))) : data
   }, [data, sortBy])
@@ -34,7 +35,7 @@ export default function FilterAccordion<DataType extends DataItem, StateType>({
   return (
     <div className="mb-4">
       <div className={`flex flex-col gap-2 ${scrollable ? 'overflow-y-scroll' : undefined}`}>
-        {sortedData &&
+        {sortedData ? (
           sortedData.map((item) => (
             <Checkbox
               key={item.id}
@@ -49,7 +50,10 @@ export default function FilterAccordion<DataType extends DataItem, StateType>({
             >
               <span className="text-small">{item.name}</span>
             </Checkbox>
-          ))}
+          ))
+        ) : (
+          <Empty />
+        )}
       </div>
     </div>
   )

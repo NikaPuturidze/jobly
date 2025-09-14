@@ -45,7 +45,7 @@ export default function HomeView({ data }: { data: MainGet }) {
             <div className="flex gap-4 border border-content5 rounded-xl p-4 justify-center w-fit bg-content2/50">
               <Input
                 aria-label="Search"
-                className="w-128 border border-content5 rounded-[8px]"
+                className="w-116 border border-content5 rounded-[8px]"
                 radius="sm"
                 value={query ?? undefined}
                 onChange={handleSetQuery}
@@ -54,7 +54,7 @@ export default function HomeView({ data }: { data: MainGet }) {
               />
               <Select
                 aria-label="Category"
-                className="w-72 border border-content5 rounded-[8px] cursor-pointer"
+                className="w-64 border border-content5 rounded-[8px] cursor-pointer"
                 placeholder="კატეგორია"
                 radius="sm"
                 selectedKeys={selectedKeys}

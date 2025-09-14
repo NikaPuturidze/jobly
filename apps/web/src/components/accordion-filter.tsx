@@ -27,7 +27,7 @@ export default function FilterAccordion<DataType extends DataItem, StateType>({
   setSelected,
 }: Readonly<FilterAccordionProps<DataType, StateType>>) {
   const sortedData = useMemo(() => {
-    return sortBy ? [...data].sort((a, b) => String(a[sortBy]).localeCompare(String(b[sortBy]))) : data
+    return sortBy ? [...data].sort((a, b) => String(a[sortBy]).localeCompare(String(b[sortBy]), 'ka')) : data
   }, [data, sortBy])
 
   const selectedSet = useMemo(() => new Set(selected), [selected])

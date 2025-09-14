@@ -1,8 +1,8 @@
 import { db } from '@jobly/db'
-import { categoryJob, company, experience, typeJob, vacancy } from '@jobly/db/src/schema'
+import { categoryJob, company, experience, experience_vacancy, typeJob, vacancy } from '@jobly/db/src/schema'
 import { inferProcedureOutput, TRPCRootObject } from '@trpc/server'
 import { RuntimeConfigOptions } from '@trpc/server/unstable-core-do-not-import'
-import { eq, count, inArray, desc, and, isNull, not, sql, gt, SQL, ilike } from 'drizzle-orm'
+import { eq, count, inArray, desc, and, isNull, not, sql, gt, SQL, ilike, countDistinct } from 'drizzle-orm'
 import z from 'zod'
 
 export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOptions<object, object>>) =>
@@ -122,6 +122,7 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
           selectedCategoriesIds: z.array(z.number()).optional(),
           selectedExperienceLevelsIds: z.array(z.number()).optional(),
           selectedJobTypeIds: z.array(z.number()).optional(),
+          currentPage: z.number().optional().default(1),
         })
       )
       .query(async ({ input }) => {
@@ -131,67 +132,80 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
           filtersVacancies.push(ilike(sql`LOWER(${vacancy.title})`, `%${input.query.toLowerCase()}%`))
         if (input.selectedCategoriesIds?.length)
           filtersVacancies.push(inArray(vacancy.categoryId, input.selectedCategoriesIds))
+        if (input.selectedExperienceLevelsIds?.length)
+          filtersVacancies.push(inArray(experience_vacancy.experienceId, input.selectedExperienceLevelsIds))
+        if (input.selectedJobTypeIds?.length)
+          filtersVacancies.push(inArray(vacancy.jobTypeId, input.selectedJobTypeIds))
 
-        const [vacancies, categories, maxSalary, expereinceLevels, jobType] = await Promise.all([
-          db
-            .select({
-              id: vacancy.id,
-              createdAt: vacancy.createdAt,
-              postedAt: vacancy.postedAt,
-              sourceUrl: vacancy.sourceUrl,
-              title: vacancy.title,
-              jobTypeId: vacancy.jobTypeId,
-              jobTypeTitle: typeJob.name,
-              categoryId: vacancy.categoryId,
-              salaryFrom: vacancy.salaryFrom,
-              salaryTo: vacancy.salaryTo,
-              salaryPeriodId: vacancy.salaryPeriodId,
-              salaryTypeId: vacancy.salaryTypeId,
-              country: vacancy.country,
-              city: vacancy.city,
-              companyId: vacancy.companyId,
-              companyName: company.name,
-              companyDescription: company.description,
-              companyHasLogo: company.hasLogo,
-              companyLogo: company.logo,
-            })
-            .from(vacancy)
-            .leftJoin(company, eq(vacancy.companyId, company.id))
-            .leftJoin(typeJob, eq(vacancy.jobTypeId, typeJob.typeId))
-            .where(and(...filtersVacancies))
-            .limit(24)
-            .then((rows) =>
-              rows.map((v) => ({
-                ...v,
-                createdAt: String(v.createdAt),
-                postedAt: String(v.postedAt),
-              }))
-            ),
-          db
-            .select({
-              id: categoryJob.categoryId,
-              name: categoryJob.name,
-            })
-            .from(categoryJob),
-          db
-            .select({ maxSalary: vacancy.salaryTo })
-            .from(vacancy)
-            .where(not(isNull(vacancy.salaryTo)))
-            .orderBy(desc(vacancy.salaryFrom))
-            .limit(1),
-          db
-            .select({
-              id: experience.experienceId,
-              name: experience.level,
-            })
-            .from(experience),
-          db
-            .select({
-              id: typeJob.typeId,
-              name: typeJob.name,
-            })
-            .from(typeJob),
-        ])
+        const [vacancies, categories, maxSalary, expereinceLevels, jobType, totalVacancy] = await Promise.all(
+          [
+            db
+              .selectDistinctOn([vacancy.id], {
+                id: vacancy.id,
+                createdAt: vacancy.createdAt,
+                postedAt: vacancy.postedAt,
+                sourceUrl: vacancy.sourceUrl,
+                title: vacancy.title,
+                jobTypeId: vacancy.jobTypeId,
+                jobTypeTitle: typeJob.name,
+                categoryId: vacancy.categoryId,
+                salaryFrom: vacancy.salaryFrom,
+                salaryTo: vacancy.salaryTo,
+                salaryPeriodId: vacancy.salaryPeriodId,
+                salaryTypeId: vacancy.salaryTypeId,
+                country: vacancy.country,
+                city: vacancy.city,
+                companyId: vacancy.companyId,
+                companyName: company.name,
+                companyDescription: company.description,
+                companyHasLogo: company.hasLogo,
+                companyLogo: company.logo,
+              })
+              .from(vacancy)
+              .leftJoin(company, eq(vacancy.companyId, company.id))
+              .leftJoin(typeJob, eq(vacancy.jobTypeId, typeJob.typeId))
+              .leftJoin(experience_vacancy, eq(vacancy.id, experience_vacancy.vacancyId))
+              .where(and(...filtersVacancies))
+              .offset((input.currentPage - 1) * 24)
+              .limit(24)
+              .then((rows) =>
+                rows.map((v) => ({
+                  ...v,
+                  createdAt: String(v.createdAt),
+                  postedAt: String(v.postedAt),
+                }))
+              ),
+            db
+              .select({
+                id: categoryJob.categoryId,
+                name: categoryJob.name,
+              })
+              .from(categoryJob),
+            db
+              .select({ maxSalary: vacancy.salaryTo })
+              .from(vacancy)
+              .where(not(isNull(vacancy.salaryTo)))
+              .orderBy(desc(vacancy.salaryFrom))
+              .limit(1),
+            db
+              .select({
+                id: experience.experienceId,
+                name: experience.level,
+              })
+              .from(experience),
+            db
+              .select({
+                id: typeJob.typeId,
+                name: typeJob.name,
+              })
+              .from(typeJob),
+            db
+              .select({ count: countDistinct(vacancy.id) })
+              .from(vacancy)
+              .leftJoin(experience_vacancy, eq(vacancy.id, experience_vacancy.vacancyId))
+              .where(and(...filtersVacancies)),
+          ]
+        )
 
         return {
           vacancies,
@@ -202,6 +216,8 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
           },
           info: {
             maxSalary: maxSalary[0]?.maxSalary,
+            totalPages: Math.ceil(Number(totalVacancy[0]?.count ?? 0) / 24),
+            totalVacancy: Number(totalVacancy[0]?.count ?? 0),
           },
         }
       }),

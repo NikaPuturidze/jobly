@@ -13,7 +13,7 @@ export default function VacancyCard({ data }: Readonly<{ data: PopularVacancy }>
             <div className="flex gap-3">
               <div className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0 bg-default-100 flex items-center justify-center">
                 {data.companyHasLogo && data.companyLogo ? (
-                  <img src={data.companyLogo} alt=" " className="w-full h-full object-cover" />
+                  <img src={data.companyLogo} alt="" className="w-full h-full object-cover" />
                 ) : (
                   <Building className="text-2xl text-default-400" />
                 )}

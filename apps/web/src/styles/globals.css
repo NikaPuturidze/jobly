@@ -1,6 +1,11 @@
 @import 'tailwindcss';
 @config "../../tailwind.config.js";
 
+html {
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: 'FiraGO', sans-serif;
   overflow-x: hidden;

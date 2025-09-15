@@ -21,22 +21,17 @@ const selectFilter = <T,>(item: T, select: Dispatch<SetStateAction<T[]>>): void 
 
 export default function FilterAccordion<DataType extends DataItem, StateType>({
   data,
-  sortBy,
   scrollable = true,
   selected,
   setSelected,
 }: Readonly<FilterAccordionProps<DataType, StateType>>) {
-  const sortedData = useMemo(() => {
-    return sortBy ? [...data].sort((a, b) => String(a[sortBy]).localeCompare(String(b[sortBy]), 'ka')) : data
-  }, [data, sortBy])
-
   const selectedSet = useMemo(() => new Set(selected), [selected])
 
   return (
     <div className="mb-4">
       <div className={`flex flex-col gap-2 ${scrollable ? 'overflow-y-scroll' : undefined}`}>
-        {sortedData ? (
-          sortedData.map((item) => (
+        {data ? (
+          data.map((item) => (
             <Checkbox
               key={item.id}
               isSelected={selectedSet.has(item.id as StateType)}

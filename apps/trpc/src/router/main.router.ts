@@ -4,6 +4,7 @@ import { inferProcedureOutput, TRPCRootObject } from '@trpc/server'
 import { RuntimeConfigOptions } from '@trpc/server/unstable-core-do-not-import'
 import { eq, count, inArray, desc, and, isNull, not, sql, gt, SQL, ilike, countDistinct } from 'drizzle-orm'
 import z from 'zod'
+import { numberFormat } from '../utils/format'
 
 export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOptions<object, object>>) =>
   trpc.router({
@@ -97,7 +98,7 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
         totalCompanies,
         totalVacancy,
         popularVacancies,
-        categories,
+        categories: categories.sort((a, b) => a.name.localeCompare(b.name)),
         popularCompanies,
       }
     }),
@@ -185,7 +186,7 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
               .select({ maxSalary: vacancy.salaryTo })
               .from(vacancy)
               .where(not(isNull(vacancy.salaryTo)))
-              .orderBy(desc(vacancy.salaryFrom))
+              .orderBy(desc(vacancy.salaryTo))
               .limit(1),
             db
               .select({
@@ -210,14 +211,14 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
         return {
           vacancies,
           filters: {
-            categories,
+            categories: categories.sort((a, b) => a.name.localeCompare(b.name)),
             expereinceLevels,
             jobType,
           },
           info: {
             maxSalary: maxSalary[0]?.maxSalary,
             totalPages: Math.ceil(Number(totalVacancy[0]?.count ?? 0) / 24),
-            totalVacancy: Number(totalVacancy[0]?.count ?? 0),
+            totalVacancy: numberFormat(Number(totalVacancy[0]?.count ?? 0)),
           },
         }
       }),

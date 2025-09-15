@@ -61,11 +61,9 @@ export default function HomeView({ data }: { data: MainGet }) {
                 selectionMode="multiple"
                 onSelectionChange={setSelectedKeys}
               >
-                {data.categories
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((category) => (
-                    <SelectItem key={category.id}>{category.name}</SelectItem>
-                  ))}
+                {data.categories.map((category) => (
+                  <SelectItem key={category.id}>{category.name}</SelectItem>
+                ))}
               </Select>
               <Button
                 onPress={() => handleSearch(query, selectedKeys)}

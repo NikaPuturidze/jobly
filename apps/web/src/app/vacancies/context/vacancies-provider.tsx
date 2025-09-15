@@ -38,6 +38,10 @@ type VacanciesContextT = {
   setSelectedExperienceLevelsIds: Dispatch<SetStateAction<number[]>>
   selectedJobTypeIds: number[]
   setSelectedJobTypeIds: Dispatch<SetStateAction<number[]>>
+  salaryRange: number | number[]
+  setSalaryRange: Dispatch<SetStateAction<number | number[]>>
+  clearKey: number
+  setClearKey: Dispatch<SetStateAction<number>>
   queryRef: MutableRefObject<HTMLInputElement | null>
   currentPage: number | null
   setCurrentPage: Dispatch<number | null>
@@ -49,11 +53,13 @@ type VacanciesContextT = {
 export const VacanciesContext = createContext<VacanciesContextT | null>(null)
 
 export const VacanciesProvider = ({ children, initialData }: VacanciesProviderProps) => {
+  const queryRef = useRef<HTMLInputElement | null>(null)
+  const [clearKey, setClearKey] = useState(0)
   const [selectedCategoriesIds, setSelectedCategoriesIds] = useState<number[]>([])
   const [selectedExperienceLevelsIds, setSelectedExperienceLevelsIds] = useState<number[]>([])
   const [selectedJobTypeIds, setSelectedJobTypeIds] = useState<number[]>([])
-  const queryRef = useRef<HTMLInputElement | null>(null)
   const [currentPage, setCurrentPage] = useState<number | null>(null)
+  const [salaryRange, setSalaryRange] = useState<number | number[]>([0, initialData.info.maxSalary || 1000])
 
   const [appliedFilters, setAppliedFilters] = useState<AppliedFilters>({
     query: null,
@@ -78,18 +84,6 @@ export const VacanciesProvider = ({ children, initialData }: VacanciesProviderPr
     }
   )
 
-  const handleClearAside = () => {
-    setSelectedCategoriesIds([])
-    setSelectedExperienceLevelsIds([])
-    setSelectedJobTypeIds([])
-  }
-
-  const handleResetAll = () => {
-    handleClearAside()
-    setCurrentPage(1)
-    queryRef.current = null
-  }
-
   const applyFilters = () => {
     setAppliedFilters({
       query: queryRef.current?.value ?? null,
@@ -98,6 +92,34 @@ export const VacanciesProvider = ({ children, initialData }: VacanciesProviderPr
       selectedJobTypeIds,
     })
     setCurrentPage(1)
+  }
+
+  const setClearQuery = () => {
+    if (queryRef.current) queryRef.current.value = ''
+    setClearKey((k) => k + 1)
+  }
+
+  const handleClearAside = () => {
+    if (
+      selectedCategoriesIds.length !== 0 &&
+      selectedExperienceLevelsIds.length !== 0 &&
+      selectedJobTypeIds.length !== 0 &&
+      queryRef.current?.value
+    ) {
+      setSelectedCategoriesIds([])
+      setSelectedExperienceLevelsIds([])
+      setSelectedJobTypeIds([])
+      setCurrentPage(1)
+      setClearQuery()
+      applyFilters()
+    }
+  }
+
+  const handleResetAll = () => {
+    handleClearAside()
+    setCurrentPage(1)
+    setClearQuery()
+    applyFilters()
   }
 
   const value = {
@@ -111,6 +133,10 @@ export const VacanciesProvider = ({ children, initialData }: VacanciesProviderPr
     setSelectedExperienceLevelsIds,
     selectedJobTypeIds,
     setSelectedJobTypeIds,
+    salaryRange,
+    setSalaryRange,
+    clearKey,
+    setClearKey,
     queryRef,
     currentPage,
     setCurrentPage,

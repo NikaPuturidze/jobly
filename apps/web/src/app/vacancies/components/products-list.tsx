@@ -1,4 +1,3 @@
-import { numberFormat } from '@/src/utils/format'
 import { useVacanciesProvider } from '../context/vacancies-provider'
 import VacancyCard from '@/src/components/card-vacancy'
 import Empty from '@/src/components/empty'
@@ -18,8 +17,8 @@ export default function ProductsList() {
     <div className="w-3/4">
       {/* In Future, add skeleton loader */}
       {isFetching ? null : data.vacancies.length ? (
-        <div className="flex flex-col gap-4">
-          <span>{numberFormat(data.info.totalVacancy)} ვაკანსია</span>
+        <div className="flex flex-col gap-3">
+          <span>{data.info.totalVacancy} ვაკანსია</span>
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 h-fit">
             {data.vacancies.map((v) => (
               <VacancyCard key={v.id} data={v as PopularVacancy} />

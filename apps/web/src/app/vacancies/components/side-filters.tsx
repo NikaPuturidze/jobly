@@ -150,7 +150,7 @@ export default function SideFilters() {
               <AccordionItem
                 key="4"
                 aria-label="Job Type Accordion"
-                title="სამუშაო გრაფიკი"
+                title="მუშაობის ტიპი"
                 classNames={{
                   base: 'scrollbar-none',
                   content: 'overflow-hidden',

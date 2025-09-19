@@ -5,6 +5,7 @@ import Empty from './empty'
 type DataItem = {
   id: number
   name: string
+  amount?: number
 }
 
 type FilterAccordionProps<DataType, StateType> = {
@@ -44,6 +45,9 @@ export default function FilterAccordion<DataType extends DataItem, StateType>({
               }}
             >
               <span className="text-small">{item.name}</span>
+              {!isNaN(Number(item.amount)) && (
+                <span className="text-small opacity-50">{` (${item.amount})`}</span>
+              )}
             </Checkbox>
           ))
         ) : (

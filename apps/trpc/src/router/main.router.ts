@@ -225,26 +225,38 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
               .select({
                 id: categoryJob.categoryId,
                 name: categoryJob.name,
+                amount: count(vacancy.id),
               })
-              .from(categoryJob),
+              .from(categoryJob)
+              .leftJoin(vacancy, eq(categoryJob.categoryId, vacancy.categoryId))
+              .groupBy(categoryJob.categoryId, categoryJob.name),
             db
               .select({ maxSalary: vacancy.salaryFrom })
               .from(vacancy)
               .where(not(isNull(vacancy.salaryFrom)))
               .orderBy(desc(vacancy.salaryFrom))
               .limit(1),
+
             db
               .select({
-                id: experience.experienceId,
+                id: experience.id,
+                experienceId: experience.experienceId,
                 name: experience.level,
+                amount: countDistinct(vacancy.id),
               })
-              .from(experience),
+              .from(experience)
+              .leftJoin(experience_vacancy, eq(experience.id, experience_vacancy.experienceId))
+              .leftJoin(vacancy, eq(vacancy.id, experience_vacancy.vacancyId))
+              .groupBy(experience.id, experience.experienceId, experience.level),
             db
               .select({
                 id: typeJob.typeId,
                 name: typeJob.name,
+                amount: count(vacancy.id),
               })
-              .from(typeJob),
+              .from(typeJob)
+              .leftJoin(vacancy, eq(vacancy.jobTypeId, typeJob.typeId))
+              .groupBy(typeJob.typeId, typeJob.name),
             db
               .select({ count: countDistinct(vacancy.id) })
               .from(vacancy)

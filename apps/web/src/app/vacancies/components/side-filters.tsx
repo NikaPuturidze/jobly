@@ -24,7 +24,7 @@ export default function SideFilters() {
     if (queryRef.current) queryRef.current.value = e.target.value
   }
 
-  const handleSliderChange = (value: number | number[]) => setSalaryRange(value)
+  const handleSliderChange = (value: number | number[]) => setSalaryRange(value as number[])
 
   return (
     <aside className="w-1/4 sticky bottom-0">
@@ -52,6 +52,7 @@ export default function SideFilters() {
 
             <div className="w-full flex gap-4 px-2 mb-4">
               <Slider
+                key={clearKey}
                 classNames={{
                   base: 'flex flex-col gap-2',
                 }}
@@ -118,6 +119,7 @@ export default function SideFilters() {
                   base: 'scrollbar-none',
                   content: 'overflow-hidden',
                   title: 'cursor-pointer',
+                  indicator: 'cursor-pointer',
                 }}
               >
                 <FilterAccordion
@@ -135,6 +137,7 @@ export default function SideFilters() {
                   base: 'scrollbar-none',
                   content: 'overflow-hidden',
                   title: 'cursor-pointer',
+                  indicator: 'cursor-pointer',
                 }}
               >
                 <FilterAccordion
@@ -152,6 +155,7 @@ export default function SideFilters() {
                   base: 'scrollbar-none',
                   content: 'overflow-hidden',
                   title: 'cursor-pointer',
+                  indicator: 'cursor-pointer',
                 }}
               >
                 <FilterAccordion
@@ -164,7 +168,7 @@ export default function SideFilters() {
             </Accordion>
           </CardBody>
         </Card>
-        <div className="sticky bottom-0 z-10 border-t border-content5 bg-white rounded-b-md p-3">
+        <div className="sticky bottom-0 z-10 border-t border-content5 bg-background rounded-b-md p-3">
           <Button radius="sm" fullWidth color="primary" onPress={() => applyFilters()}>
             ძიება
           </Button>

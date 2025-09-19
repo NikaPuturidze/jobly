@@ -2,7 +2,23 @@ import { db } from '@jobly/db'
 import { categoryJob, company, experience, experience_vacancy, typeJob, vacancy } from '@jobly/db/src/schema'
 import { inferProcedureOutput, TRPCRootObject } from '@trpc/server'
 import { RuntimeConfigOptions } from '@trpc/server/unstable-core-do-not-import'
-import { eq, count, inArray, desc, and, isNull, not, sql, gt, SQL, ilike, countDistinct } from 'drizzle-orm'
+import {
+  eq,
+  count,
+  inArray,
+  desc,
+  and,
+  isNull,
+  not,
+  sql,
+  gt,
+  SQL,
+  ilike,
+  countDistinct,
+  gte,
+  lte,
+  or,
+} from 'drizzle-orm'
 import z from 'zod'
 import { numberFormat } from '../utils/format'
 
@@ -124,19 +140,48 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
           selectedExperienceLevelsIds: z.array(z.number()).optional(),
           selectedJobTypeIds: z.array(z.number()).optional(),
           currentPage: z.number().optional().default(1),
+          salaryFrom: z.number().optional().default(0),
+          salaryTo: z.number().optional().default(undefined),
         })
       )
       .query(async ({ input }) => {
-        const filtersVacancies: SQL[] = []
+        const filtersVacancies: (SQL | undefined)[] = []
 
-        if (input.query)
+        if (input.query) {
           filtersVacancies.push(ilike(sql`LOWER(${vacancy.title})`, `%${input.query.toLowerCase()}%`))
-        if (input.selectedCategoriesIds?.length)
+        }
+        if (input.selectedCategoriesIds?.length) {
           filtersVacancies.push(inArray(vacancy.categoryId, input.selectedCategoriesIds))
-        if (input.selectedExperienceLevelsIds?.length)
+        }
+
+        if (input.selectedExperienceLevelsIds?.length) {
           filtersVacancies.push(inArray(experience_vacancy.experienceId, input.selectedExperienceLevelsIds))
-        if (input.selectedJobTypeIds?.length)
+        }
+        if (input.selectedJobTypeIds?.length) {
           filtersVacancies.push(inArray(vacancy.jobTypeId, input.selectedJobTypeIds))
+        }
+
+        if (input.salaryFrom) {
+          filtersVacancies.push(
+            or(
+              isNull(vacancy.salaryFrom),
+              isNull(vacancy.salaryTo),
+              gte(vacancy.salaryTo, input.salaryFrom),
+              gte(vacancy.salaryFrom, input.salaryFrom)
+            )
+          )
+        }
+
+        if (input.salaryTo) {
+          filtersVacancies.push(
+            or(
+              isNull(vacancy.salaryFrom),
+              isNull(vacancy.salaryTo),
+              lte(vacancy.salaryFrom, input.salaryTo),
+              lte(vacancy.salaryTo, input.salaryTo)
+            )
+          )
+        }
 
         const [vacancies, categories, maxSalary, expereinceLevels, jobType, totalVacancy] = await Promise.all(
           [
@@ -183,10 +228,10 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
               })
               .from(categoryJob),
             db
-              .select({ maxSalary: vacancy.salaryTo })
+              .select({ maxSalary: vacancy.salaryFrom })
               .from(vacancy)
-              .where(not(isNull(vacancy.salaryTo)))
-              .orderBy(desc(vacancy.salaryTo))
+              .where(not(isNull(vacancy.salaryFrom)))
+              .orderBy(desc(vacancy.salaryFrom))
               .limit(1),
             db
               .select({

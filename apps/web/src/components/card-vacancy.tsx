@@ -11,9 +11,9 @@ export default function VacancyCard({ data }: Readonly<{ data: PopularVacancy }>
         <div className="flex flex-col gap-4">
           <div className="flex items-start justify-between">
             <div className="flex gap-3">
-              <div className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0 bg-default-100 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0 bg-white flex items-center justify-center">
                 {data.companyHasLogo && data.companyLogo ? (
-                  <img src={data.companyLogo} alt="" className="w-full h-full object-cover" />
+                  <img src={data.companyLogo} alt="" className="w-full" />
                 ) : (
                   <Building className="text-2xl text-default-400" />
                 )}
@@ -28,7 +28,8 @@ export default function VacancyCard({ data }: Readonly<{ data: PopularVacancy }>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="flex items-center gap-1.5 text-small text-default-600">
               <MapPin size={16} className="text-default-400" />
-              <span>{data.city}</span>
+              {data.city && <span>{data.city}</span>}
+              {!data.city && <span>უცნობი</span>}
             </div>
             <div className="flex items-center gap-1.5 text-small text-default-600">
               <Briefcase size={16} className="text-default-400" />
@@ -36,8 +37,9 @@ export default function VacancyCard({ data }: Readonly<{ data: PopularVacancy }>
             </div>
             <div className="flex items-center gap-1.5 text-small text-default-600">
               <GeorgianLari size={16} className="text-default-400" />
-              <span>{data.salaryFrom}</span>
+              {data.salaryFrom && <span>{data.salaryFrom}</span>}
               {data.salaryTo && <span> - {data.salaryTo}</span>}
+              {!data.salaryTo && !data.salaryFrom && <span>შეთანხმებით</span>}
             </div>
             <div className="flex items-center gap-1.5 text-small text-default-600">
               <Calendar size={16} className="text-default-400" />

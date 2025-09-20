@@ -76,8 +76,6 @@ export async function jobs_ss_ge_worker() {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     )
-
-    console.log(data.result.items.length)
     return data.result.items
   }
 
@@ -87,10 +85,11 @@ export async function jobs_ss_ge_worker() {
     async (item) => {
       if (item.sphereId === (396 as CategoryId)) return
       if (item.sphereId === (394 as CategoryId)) return
+      if (item.sphereId === (0 as CategoryId)) return
       await insert_jobs_ss_ge(format_jobs_ss_ge({ data: item, companies: companies.result.items }))
     },
     1
   )
 }
 
-jobs_ss_ge_worker()
+my_jobs_ge_worker()

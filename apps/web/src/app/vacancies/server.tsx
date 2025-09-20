@@ -6,6 +6,5 @@ import VacanciesProviders from './providers'
 
 export default async function VacanciesData() {
   const initialData = await trpcServer.main.vacancies.query({})
-  console.log('initialData', initialData)
   return <VacanciesProviders initialData={initialData} />
 }

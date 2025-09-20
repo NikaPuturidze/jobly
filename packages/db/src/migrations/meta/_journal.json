@@ -232,6 +232,27 @@
       "when": 1757502328433,
       "tag": "0032_low_multiple_man",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1758381347875,
+      "tag": "0033_youthful_namor",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1758381459789,
+      "tag": "0034_fearless_doctor_doom",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1758386667330,
+      "tag": "0035_even_screwball",
+      "breakpoints": true
     }
   ]
 }

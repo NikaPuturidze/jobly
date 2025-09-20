@@ -27,7 +27,7 @@ export interface IMyJobsGeData {
   created_at: string
   description: string
   education_levels: string[]
-  employment_type: string
+  employment_type: EmploymentType
   experience_level: Experience | null
   experience_levels: { experience_level: Experience }[]
   has_search_priority: number
@@ -40,9 +40,9 @@ export interface IMyJobsGeData {
   job_type: JobType
   languages: Language[]
   priority_level: number
-  salary_from: null
+  salary_from: number | null
   salary_period: SalaryPeriodType | null
-  salary_to: null
+  salary_to: number | null
   salary_type: SalaryType
   seo_keywords: SEOKeywords
   show_salary: number
@@ -102,6 +102,13 @@ export interface Link {
   active: boolean
   label: string
   url: null | string
+}
+
+export enum EmploymentType {
+  FullTime = 'full_time',
+  PartTime = 'part_time',
+  Hourly = 'hourly',
+  Shifts = 'shifts',
 }
 
 export enum JobType {

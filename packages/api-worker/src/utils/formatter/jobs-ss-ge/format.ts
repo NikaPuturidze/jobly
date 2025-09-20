@@ -8,6 +8,7 @@ import {
   JobType,
   SalaryPeriodType,
   SalaryType,
+  WorkingSchedule,
 } from './interfaces/interface'
 
 type Props = {
@@ -28,6 +29,7 @@ export default function format({ data, companies }: Props): IFormat {
     title: data.title.ka,
     postedAt: data.startDate,
     jobTypeId: JobTypeMap[data.jobsDealType],
+    employmentTypeId: EmploymentTypeMap[data.workingFormat as WorkingSchedule] ?? null,
     categoryId: categoryId,
     salaryFrom: data.salaryFrom,
     salaryTo: data.salaryTo,
@@ -51,6 +53,13 @@ export default function format({ data, companies }: Props): IFormat {
     companyDescription: company?.description || null,
     experienceIds: [ExperienceTypeMap[data?.workingSchedule ?? 0] ?? 0],
   }
+}
+
+const EmploymentTypeMap: Record<WorkingSchedule, number> = {
+  [WorkingSchedule.FullTime]: 1,
+  [WorkingSchedule.PartTime]: 2,
+  [WorkingSchedule.Shifts]: 4,
+  [WorkingSchedule.Free]: 5,
 }
 
 const JobTypeMap: Record<JobType, number> = {
@@ -78,7 +87,7 @@ const SalaryPeriodMap: Record<SalaryPeriodType, number> = {
   [SalaryPeriodType.Daily]: 2,
 }
 
-const CategoriesMap: Record<number, CategoryId[]> = {
+const CategoriesMap: Partial<Record<Cat, CategoryId[]>> = {
   [Cat.IT]: [CategoryId.IT],
   [Cat.AutoService]: [CategoryId.AutoService],
   [Cat.MarketingSales]: [CategoryId.SalesManager],

@@ -28,6 +28,12 @@ export const experience = pgTable('experience', {
   level: text('level').notNull(),
 })
 
+export const typeEmployment = pgTable('type_employment', {
+  id: serial('id').primaryKey(),
+  typeId: integer('type_id').unique().notNull(),
+  name: text('name').notNull(),
+})
+
 export const periodSalary = pgTable('period_salary', {
   id: serial('id').primaryKey(),
   typeId: integer('type_id').unique().notNull(),
@@ -40,6 +46,7 @@ export const vacancy = pgTable('vacancy', {
   postedAt: timestamp('posted_at').notNull(),
   sourceUrl: text('source_url').unique().notNull(),
   title: text('title'),
+  employmentTypeId: integer('employment_type_id').references(() => typeEmployment.typeId),
   jobTypeId: integer('job_type_id').references(() => typeJob.typeId),
   categoryId: integer('category_id').references(() => categoryJob.categoryId),
   salaryFrom: integer('salary_from'),
@@ -89,6 +96,7 @@ export const navigation = pgTable('navigation', {
 export type CategoryJob = InferSelectModel<typeof categoryJob>
 export type TypeSalary = InferSelectModel<typeof typeSalary>
 export type TypeJob = InferSelectModel<typeof typeJob>
+export type TypeEmployment = InferSelectModel<typeof typeEmployment>
 export type Experience = InferSelectModel<typeof experience>
 export type Vacancy = InferSelectModel<typeof vacancy>
 export type ExperienceVacancy = InferSelectModel<typeof experience_vacancy>
@@ -99,6 +107,7 @@ export type Navigation = InferSelectModel<typeof navigation>
 export type CategoryJobInsert = InferInsertModel<typeof categoryJob>
 export type TypeSalaryInsert = InferInsertModel<typeof typeSalary>
 export type TypeJobInsert = InferInsertModel<typeof typeJob>
+export type TypeEmploymentInsert = InferSelectModel<typeof typeEmployment>
 export type ExperienceInsert = InferInsertModel<typeof experience>
 export type VacancyInsert = InferInsertModel<typeof vacancy>
 export type ExperienceVacancyInsert = InferInsertModel<typeof experience_vacancy>

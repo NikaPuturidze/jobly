@@ -38,7 +38,14 @@ export interface IJobsSsGeItem {
   vipStatus: number
   workingExperience: Experience | null
   workingFormat: number
-  workingSchedule: number | null
+  workingSchedule: WorkingSchedule | null
+}
+
+export enum WorkingSchedule {
+  FullTime = 0,
+  PartTime = 1,
+  Free = 2,
+  Shifts = 3,
 }
 
 export interface Address {

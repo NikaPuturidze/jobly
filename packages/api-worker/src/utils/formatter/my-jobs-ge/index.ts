@@ -5,6 +5,7 @@ import { IFormat } from '../../shared/format.interface'
 import identityKey from '../../shared/dedupe'
 import { eq } from 'drizzle-orm'
 import { extractDomain } from '../../shared/domain'
+import { VacancyInsertStrict } from '../../shared/insert.type'
 
 export default async function insertVacancy(data: IFormat) {
   let companyId: number | null = null
@@ -33,24 +34,24 @@ export default async function insertVacancy(data: IFormat) {
       return null
     }
 
-    const [insertedVacancy] = await db
-      .insert(vacancy)
-      .values({
-        sourceUrl: data.sourceUrl,
-        title: data.title,
-        postedAt: new Date(data.postedAt),
-        jobTypeId: data.jobTypeId,
-        categoryId: data.categoryId,
-        salaryFrom: data.salaryFrom ?? null,
-        salaryTo: data.salaryTo ?? null,
-        salaryPeriodId: data.salaryPeriodId,
-        salaryTypeId: data.salaryTypeId,
-        country: data.locationCountry,
-        city: data.locationCity,
-        companyId,
-        dedupeKey: key,
-      })
-      .returning({ id: vacancy.id })
+    const values: VacancyInsertStrict = {
+      sourceUrl: data.sourceUrl,
+      title: data.title,
+      postedAt: new Date(data.postedAt),
+      employmentTypeId: data.employmentTypeId,
+      jobTypeId: data.jobTypeId,
+      categoryId: data.categoryId,
+      salaryFrom: data.salaryFrom ?? null,
+      salaryTo: data.salaryTo ?? null,
+      salaryPeriodId: data.salaryPeriodId,
+      salaryTypeId: data.salaryTypeId,
+      country: data.locationCountry,
+      city: data.locationCity ?? null,
+      companyId,
+      dedupeKey: key,
+    }
+
+    const [insertedVacancy] = await db.insert(vacancy).values(values).returning({ id: vacancy.id })
 
     if (!insertedVacancy) {
       console.warn(`Duplicate vacancy skipped (same domain): ${data.title}`)

@@ -3,6 +3,7 @@ export interface IFormat {
   title: string | null
   postedAt: string | Date
   jobTypeId: number
+  employmentTypeId: number | null
   categoryId: number
   salaryFrom: number | null
   salaryTo: number | null

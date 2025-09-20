@@ -1,0 +1,2 @@
+ALTER TABLE "vacancy" ADD COLUMN "employement_type_id" integer;--> statement-breakpoint
+ALTER TABLE "vacancy" ADD CONSTRAINT "vacancy_employement_type_id_type_employment_type_id_fk" FOREIGN KEY ("employement_type_id") REFERENCES "public"."type_employment"("type_id") ON DELETE no action ON UPDATE no action;

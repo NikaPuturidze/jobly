@@ -2,6 +2,7 @@ import { Cat } from '../../shared/categories'
 import { IFormat } from '../../shared/format.interface'
 import {
   CategoryId,
+  EmploymentType,
   Experience,
   IMyJobsGeData,
   JobType,
@@ -10,12 +11,17 @@ import {
 } from './interfaces/interface'
 
 export default function format(data: IMyJobsGeData): IFormat {
+  const categoryId = +Object.entries(CategoriesMap).find(([, value]) =>
+    value.includes(data.category_data.id)
+  )![0]
+
   return {
     sourceUrl: `https://myjobs.ge/ka/vacancy/${data.id}`,
     title: data.title,
     postedAt: data.created_at,
     jobTypeId: JobTypeMap[data.job_type],
-    categoryId: +Object.entries(CategoriesMap).find(([, value]) => value.includes(data.category_data.id))![0],
+    employmentTypeId: EmploymentTypeMap[data.employment_type as EmploymentType] ?? null,
+    categoryId: categoryId,
     salaryFrom: data.salary_from,
     salaryTo: data.salary_to,
     salaryPeriodId: data.salary_period ? SalaryPeriodMap[data.salary_period] : null,
@@ -29,9 +35,16 @@ export default function format(data: IMyJobsGeData): IFormat {
     companyCity: data.company.city_title,
     companyDescription: data.company.description,
     experienceIds: data.experience_levels
-      .map((e) => experienceMap[e.experience_level])
+      .map((e) => ExperienceMap[e.experience_level])
       .filter((id): id is number => !!id),
   }
+}
+
+const EmploymentTypeMap: Record<EmploymentType, number> = {
+  [EmploymentType.FullTime]: 1,
+  [EmploymentType.PartTime]: 2,
+  [EmploymentType.Hourly]: 3,
+  [EmploymentType.Shifts]: 4,
 }
 
 const JobTypeMap: Record<JobType, number> = {
@@ -52,7 +65,7 @@ const SalaryPeriodMap: Record<SalaryPeriodType, number> = {
   [SalaryPeriodType.Daily]: 2,
 }
 
-const CategoriesMap: Record<number, CategoryId[]> = {
+const CategoriesMap: Partial<Record<Cat, CategoryId[]>> = {
   [Cat.IT]: [CategoryId.ITDevelopment, CategoryId.WebDesign, CategoryId.ITTech],
   [Cat.MarketingSales]: [CategoryId.Marketing],
   [Cat.Finance]: [CategoryId.Sales, CategoryId.Finance],
@@ -80,7 +93,7 @@ const CategoriesMap: Record<number, CategoryId[]> = {
   [Cat.Office]: [CategoryId.Office],
 }
 
-const experienceMap: Record<Experience, number> = {
+const ExperienceMap: Record<Experience, number> = {
   [Experience.Junior]: 1,
   [Experience.Middle]: 2,
   [Experience.Professional]: 3,

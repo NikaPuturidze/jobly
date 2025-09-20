@@ -5,7 +5,6 @@
   "private": true,
   "scripts": {
     "worker:flush": "redis-cli FLUSHALL",
-    "worker:clean-start": "pnpm run flush-redis && ts-node ./index.ts",
     "worker:start": "pnpm ts-node ./index.ts"
   },
   "dependencies": {

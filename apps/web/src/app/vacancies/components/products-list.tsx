@@ -26,11 +26,13 @@ export default function ProductsList() {
           </div>
           <Pagination
             size="lg"
+            radius="lg"
             classNames={{
               prev: 'cursor-pointer',
               next: 'cursor-pointer',
               base: 'flex justify-center overflow-hidden',
-              item: 'cursor-pointer',
+              wrapper: 'border border-content5 px-4 py-2 ',
+              item: 'cursor-pointer border-1 border-content5',
             }}
             initialPage={1}
             page={currentPage ?? 1}

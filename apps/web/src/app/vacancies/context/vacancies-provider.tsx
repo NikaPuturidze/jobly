@@ -100,6 +100,7 @@ export const VacanciesProvider = ({ children, initialData }: VacanciesProviderPr
       salaryTo: salaryRange[1],
     })
     setCurrentPage(1)
+    window.scrollTo(0, 0)
   }
 
   const setClearQuery = () => {

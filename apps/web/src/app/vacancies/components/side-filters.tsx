@@ -55,6 +55,7 @@ export default function SideFilters() {
                 key={clearKey}
                 classNames={{
                   base: 'flex flex-col gap-2',
+                  label: 'font-bold',
                 }}
                 className="max-w-md"
                 defaultValue={salaryRange}
@@ -118,7 +119,7 @@ export default function SideFilters() {
                 classNames={{
                   base: 'scrollbar-none',
                   content: 'overflow-hidden',
-                  title: 'cursor-pointer',
+                  title: 'cursor-pointer font-bold',
                   indicator: 'cursor-pointer',
                 }}
               >
@@ -136,7 +137,7 @@ export default function SideFilters() {
                 classNames={{
                   base: 'scrollbar-none',
                   content: 'overflow-hidden',
-                  title: 'cursor-pointer',
+                  title: 'cursor-pointer font-bold',
                   indicator: 'cursor-pointer',
                 }}
               >
@@ -154,7 +155,7 @@ export default function SideFilters() {
                 classNames={{
                   base: 'scrollbar-none',
                   content: 'overflow-hidden',
-                  title: 'cursor-pointer',
+                  title: 'cursor-pointer font-bold',
                   indicator: 'cursor-pointer',
                 }}
               >
@@ -168,7 +169,7 @@ export default function SideFilters() {
             </Accordion>
           </CardBody>
         </Card>
-        <div className="sticky bottom-0 z-10 border-t border-content5 bg-background rounded-b-md p-3">
+        <div className="sticky bottom-0 z-10 border-t border-content5 bg-content1 rounded-b-md p-3">
           <Button radius="sm" fullWidth color="primary" onPress={() => applyFilters()}>
             ძიება
           </Button>

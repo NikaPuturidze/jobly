@@ -6,12 +6,7 @@ import { Search } from 'lucide-react'
 export default function SideFilters() {
   const {
     data,
-    selectedCategoriesIds,
-    setSelectedCategoriesIds,
-    selectedExperienceLevelsIds,
-    setSelectedExperienceLevelsIds,
-    selectedJobTypeIds,
-    setSelectedJobTypeIds,
+    accordionItems,
     salaryRange,
     setSalaryRange,
     clearKey,
@@ -112,60 +107,26 @@ export default function SideFilters() {
                 },
               }}
             >
-              <AccordionItem
-                key="2"
-                aria-label="Category Accordion"
-                title="კატეგორია"
-                classNames={{
-                  base: 'scrollbar-none',
-                  content: 'overflow-hidden',
-                  title: 'cursor-pointer font-bold',
-                  indicator: 'cursor-pointer',
-                }}
-              >
-                <FilterAccordion
-                  data={data.filters.categories}
-                  selected={selectedCategoriesIds}
-                  setSelected={setSelectedCategoriesIds}
-                  scrollable={false}
-                />
-              </AccordionItem>
-              <AccordionItem
-                key="3"
-                aria-label="Experience Accordion"
-                title="გამოცდილება"
-                classNames={{
-                  base: 'scrollbar-none',
-                  content: 'overflow-hidden',
-                  title: 'cursor-pointer font-bold',
-                  indicator: 'cursor-pointer',
-                }}
-              >
-                <FilterAccordion
-                  data={data.filters.expereinceLevels}
-                  selected={selectedExperienceLevelsIds}
-                  setSelected={setSelectedExperienceLevelsIds}
-                  scrollable={false}
-                />
-              </AccordionItem>
-              <AccordionItem
-                key="4"
-                aria-label="Job Type Accordion"
-                title="მუშაობის ტიპი"
-                classNames={{
-                  base: 'scrollbar-none',
-                  content: 'overflow-hidden',
-                  title: 'cursor-pointer font-bold',
-                  indicator: 'cursor-pointer',
-                }}
-              >
-                <FilterAccordion
-                  data={data.filters.jobType}
-                  selected={selectedJobTypeIds}
-                  setSelected={setSelectedJobTypeIds}
-                  scrollable={false}
-                />
-              </AccordionItem>
+              {accordionItems.map((item) => (
+                <AccordionItem
+                  key={item.key}
+                  aria-label={item.aria}
+                  title={item.title}
+                  classNames={{
+                    base: 'scrollbar-none',
+                    content: 'overflow-hidden',
+                    title: 'cursor-pointer font-bold',
+                    indicator: 'cursor-pointer',
+                  }}
+                >
+                  <FilterAccordion
+                    data={item.data}
+                    selected={item.selected}
+                    setSelected={item.setSelected}
+                    scrollable={false}
+                  />
+                </AccordionItem>
+              ))}
             </Accordion>
           </CardBody>
         </Card>

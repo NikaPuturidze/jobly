@@ -1,5 +1,13 @@
 import { db } from '@jobly/db'
-import { categoryJob, company, experience, experience_vacancy, typeJob, vacancy } from '@jobly/db/src/schema'
+import {
+  categoryJob,
+  company,
+  experience,
+  experience_vacancy,
+  typeEmployment,
+  typeJob,
+  vacancy,
+} from '@jobly/db/src/schema'
 import { inferProcedureOutput, TRPCRootObject } from '@trpc/server'
 import { RuntimeConfigOptions } from '@trpc/server/unstable-core-do-not-import'
 import {
@@ -142,6 +150,7 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
           currentPage: z.number().optional().default(1),
           salaryFrom: z.number().optional().default(0),
           salaryTo: z.number().optional().default(undefined),
+          selectedEmploymentTypeIds: z.array(z.number()).optional(),
         })
       )
       .query(async ({ input }) => {
@@ -171,7 +180,6 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
             )
           )
         }
-
         if (input.salaryTo) {
           filtersVacancies.push(
             or(
@@ -183,8 +191,12 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
           )
         }
 
-        const [vacancies, categories, maxSalary, expereinceLevels, jobType, totalVacancy] = await Promise.all(
-          [
+        if (input.selectedEmploymentTypeIds?.length) {
+          filtersVacancies.push(inArray(vacancy.employmentTypeId, input.selectedEmploymentTypeIds))
+        }
+
+        const [vacancies, categories, maxSalary, expereinceLevels, jobType, totalVacancy, employmentType] =
+          await Promise.all([
             db
               .selectDistinctOn([vacancy.id], {
                 id: vacancy.id,
@@ -262,8 +274,16 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
               .from(vacancy)
               .leftJoin(experience_vacancy, eq(vacancy.id, experience_vacancy.vacancyId))
               .where(and(...filtersVacancies)),
-          ]
-        )
+            db
+              .select({
+                id: typeEmployment.typeId,
+                name: typeEmployment.name,
+                amount: count(vacancy.id),
+              })
+              .from(typeEmployment)
+              .leftJoin(vacancy, eq(typeEmployment.typeId, vacancy.employmentTypeId))
+              .groupBy(typeEmployment.typeId, typeEmployment.name),
+          ])
 
         return {
           vacancies,
@@ -271,6 +291,7 @@ export const mainRouter = (trpc: TRPCRootObject<object, object, RuntimeConfigOpt
             categories: categories.sort((a, b) => a.name.localeCompare(b.name)),
             expereinceLevels,
             jobType,
+            employmentType,
           },
           info: {
             maxSalary: maxSalary[0]?.maxSalary,

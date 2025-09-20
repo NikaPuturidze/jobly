@@ -21,6 +21,7 @@ type AppliedFilters = {
   selectedJobTypeIds: number[]
   salaryFrom: number | undefined
   salaryTo: number | undefined
+  selectedEmploymentTypeIds: number[]
 }
 
 type VacanciesProviderProps = Readonly<
@@ -28,6 +29,19 @@ type VacanciesProviderProps = Readonly<
     initialData: Vacancies
   }>
 >
+
+type AccordionItem = {
+  key: string
+  title: string
+  aria: string
+  data: {
+    id: number
+    name: string
+    amount: number
+  }[]
+  selected: number[]
+  setSelected: Dispatch<SetStateAction<number[]>>
+}
 
 type VacanciesContextT = {
   data: Vacancies
@@ -42,6 +56,8 @@ type VacanciesContextT = {
   setSelectedJobTypeIds: Dispatch<SetStateAction<number[]>>
   salaryRange: number[]
   setSalaryRange: Dispatch<SetStateAction<number[]>>
+  selectedEmploymentTypeIds: number[]
+  setSelectedEmploymentTypeIds: Dispatch<SetStateAction<number[]>>
   clearKey: number
   setClearKey: Dispatch<SetStateAction<number>>
   queryRef: MutableRefObject<HTMLInputElement | null>
@@ -50,6 +66,7 @@ type VacanciesContextT = {
   handleClearAside: () => void
   handleResetAll: () => void
   applyFilters: () => void
+  accordionItems: AccordionItem[]
 }
 
 export const VacanciesContext = createContext<VacanciesContextT | null>(null)
@@ -62,6 +79,10 @@ export const VacanciesProvider = ({ children, initialData }: VacanciesProviderPr
   const [selectedJobTypeIds, setSelectedJobTypeIds] = useState<number[]>([])
   const [currentPage, setCurrentPage] = useState<number | null>(null)
   const [salaryRange, setSalaryRange] = useState<number[]>([0, initialData.info.maxSalary || 10000])
+  const [selectedEmploymentTypeIds, setSelectedEmploymentTypeIds] = useState<number[]>([
+    0,
+    initialData.info.maxSalary || 10000,
+  ])
 
   const [appliedFilters, setAppliedFilters] = useState<AppliedFilters>({
     query: null,
@@ -70,6 +91,7 @@ export const VacanciesProvider = ({ children, initialData }: VacanciesProviderPr
     selectedJobTypeIds: [],
     salaryFrom: 0,
     salaryTo: undefined,
+    selectedEmploymentTypeIds: [],
   })
 
   const { data, isFetching, isLoading, refetch } = trpcClient.main.vacancies.useQuery(
@@ -81,6 +103,7 @@ export const VacanciesProvider = ({ children, initialData }: VacanciesProviderPr
       currentPage: currentPage ?? 1,
       salaryFrom: appliedFilters.salaryFrom,
       salaryTo: appliedFilters.salaryTo,
+      selectedEmploymentTypeIds: appliedFilters.selectedEmploymentTypeIds,
     },
     {
       initialData,
@@ -90,6 +113,41 @@ export const VacanciesProvider = ({ children, initialData }: VacanciesProviderPr
     }
   )
 
+  const accordionItems = [
+    {
+      key: '2',
+      title: 'კატეგორია',
+      aria: 'Category Accordion',
+      data: data.filters.categories,
+      selected: selectedCategoriesIds,
+      setSelected: setSelectedCategoriesIds,
+    },
+    {
+      key: '3',
+      title: 'გამოცდილება',
+      aria: 'Experience Accordion',
+      data: data.filters.expereinceLevels,
+      selected: selectedExperienceLevelsIds,
+      setSelected: setSelectedExperienceLevelsIds,
+    },
+    {
+      key: '4',
+      title: 'მუშაობის ტიპი',
+      aria: 'Job Type Accordion',
+      data: data.filters.jobType,
+      selected: selectedJobTypeIds,
+      setSelected: setSelectedJobTypeIds,
+    },
+    {
+      key: '5',
+      title: 'სამუშაო განაკვეთი',
+      aria: 'Employment Type Accordion',
+      data: data.filters.employmentType,
+      selected: selectedEmploymentTypeIds,
+      setSelected: setSelectedEmploymentTypeIds,
+    },
+  ]
+
   const applyFilters = () => {
     setAppliedFilters({
       query: queryRef.current?.value ?? null,
@@ -98,6 +156,7 @@ export const VacanciesProvider = ({ children, initialData }: VacanciesProviderPr
       selectedJobTypeIds,
       salaryFrom: salaryRange[0],
       salaryTo: salaryRange[1],
+      selectedEmploymentTypeIds,
     })
     setCurrentPage(1)
     window.scrollTo(0, 0)
@@ -121,6 +180,7 @@ export const VacanciesProvider = ({ children, initialData }: VacanciesProviderPr
       selectedJobTypeIds: [],
       salaryFrom: 0,
       salaryTo: initialData.info.maxSalary || 10000,
+      selectedEmploymentTypeIds,
     })
     setSalaryRange([0, initialData.info.maxSalary || 10000])
   }
@@ -142,6 +202,8 @@ export const VacanciesProvider = ({ children, initialData }: VacanciesProviderPr
     setSelectedExperienceLevelsIds,
     selectedJobTypeIds,
     setSelectedJobTypeIds,
+    selectedEmploymentTypeIds,
+    setSelectedEmploymentTypeIds,
     salaryRange,
     setSalaryRange,
     clearKey,
@@ -152,6 +214,7 @@ export const VacanciesProvider = ({ children, initialData }: VacanciesProviderPr
     handleClearAside,
     handleResetAll,
     applyFilters,
+    accordionItems,
   }
 
   return <VacanciesContext.Provider value={value}>{children}</VacanciesContext.Provider>
